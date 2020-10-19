@@ -56,6 +56,7 @@ def update():
             if grid[i][j]==0:
                 continue
             elif grid[i][j]==1:
+                nextGrid[i][j]=1
                 try:
                     if directionGrid[i][j]==0: #North
                         nextGrid[i-1][j]=1
