@@ -5,9 +5,8 @@ from pylab import *
 import random
 
 def initialize():
-    global grid, nextGrid, color
+    global grid, nextGrid
     global directionGrid
-    color = 1
     directionGrid = initialize_random_directions(100,100)
     # directionGrid = demo2()
     grid = zeros([100,100])
@@ -51,10 +50,9 @@ def initialize_random_directions(n, m):
     return directionGrid
 
 def observe():
-    global grid, nextGrid, color
+    global grid, nextGrid
     cla()
     imshow(grid, vmin=0, vmax=1, cmap=cm.nipy_spectral)
-    color+=1 % 10
 
 def update():
     global grid, nextGrid, directionGrid
