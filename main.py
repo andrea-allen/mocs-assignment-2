@@ -5,36 +5,41 @@ from pylab import *
 import random
 
 def initialize():
-    global grid, nextGrid
+    global grid, nextGrid, color
     global directionGrid
-    directionGrid = initialize_directions()
+    color = 1
+    directionGrid = initialize_random_directions(100,100)
+    # directionGrid = demo2()
     grid = zeros([100,100])
-    grid[10, 15] = 1
-    grid[22, 35] = 1
-    for i in range(100):
-        for j in range(100):
-            grid[i,j] = 1 if random.random() < .005 else 0
+    for i in range(40, 60):
+        for j in range(40, 60):
+            grid[i,j] = 1 if random.random() < .05 else 0
     nextGrid = zeros([100,100])
 
-def initialize_directions():
+def demo2():
     #Key: North=0, NE=45, E=90, SE=135, S=180, SW=225,
     #W=270, NW=315
     #TODO How do we want to initialize the flows? This is a sample initialization for now
     directionGrid = zeros([100,100])
     for i in range(100):
         for j in range(100):
-            if (i<50 and j<50):
-                directionGrid[i][j]=90
-            if (i>50 and j<50):
-                directionGrid[i][j]=random.choice([0,45,90,135,180,225,270,315])
-            if (i<50 and j>50):
-                directionGrid[i][j]=225
-            if (i>50 and j>50):
-                directionGrid[i][j]=270
-                if (i>60 and j<60):
-                    directionGrid[i][j]=random.choice([0,45,90,135,180,225,270,315])
-                if (i>70 and j<60):
-                    directionGrid[i][j]=135
+            if (i<=50 and j<=50):
+                directionGrid[i][j]=90 #East
+            if (i>50 and j<=50):
+                directionGrid[i][j]=random.choice([135,180,225]) #Random SE, S, SW
+            if (i<=50 and j>=50):
+                directionGrid[i][j]=315 # NW
+            if (i>50 and j>=50):
+                directionGrid[i][j]=270 # West
+    directionGrid = boundary_setup(directionGrid)
+    return directionGrid
+
+def boundary_setup(directionGrid):
+    for i in range(len(directionGrid)):
+        directionGrid[i][0] = 270
+        directionGrid[0][i] = 0
+        directionGrid[i][len(directionGrid)-1] = 90
+        directionGrid[len(directionGrid)-1] = 180
     return directionGrid
 
 def initialize_random_directions(n, m):
@@ -42,12 +47,14 @@ def initialize_random_directions(n, m):
     for i in range(n):
         for j in range(m):
             directionGrid[i][j]=random.choice([0,45,90,135,180,225,270,315])
+    directionGrid = boundary_setup(directionGrid)
     return directionGrid
 
 def observe():
-    global grid, nextGrid
+    global grid, nextGrid, color
     cla()
-    imshow(grid, vmin=0, vmax=1, cmap=cm.winter)
+    imshow(grid, vmin=0, vmax=1, cmap=cm.nipy_spectral)
+    color+=1 % 10
 
 def update():
     global grid, nextGrid, directionGrid
