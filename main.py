@@ -7,8 +7,8 @@ import random
 def initialize():
     global grid, nextGrid
     global directionGrid
-    directionGrid = initialize_random_directions(100,100)
-    # directionGrid = demo2()
+    # directionGrid = initialize_random_directions(100,100)
+    directionGrid = demo2()
     grid = zeros([100,100])
     for i in range(40, 60):
         for j in range(40, 60):
