@@ -15,23 +15,24 @@ def initialize():
 
 
 def observe():
-    global grid, nextGrid
+    global grid, nextGrid, finalgrid
     cla()
     imshow(grid, vmin=0, vmax=1, cmap=cm.summer)
+    finalgrid = grid
 
 def add_new_walkers():
     global grid
-    for i in range(0, 5):
-        for j in range(0, 5):
+    for i in range(0, 100):
+        for j in range(0, 1):
             grid[i,j] = 1 if random.random() < 0.15 else 0
-    for i in range(95, 100):
-        for j in range(0, 5):
+    for i in range(0, 100):
+        for j in range(99, 100):
             grid[i,j] = 1 if random.random() < 0.15 else 0
-    for i in range(0, 5):
-        for j in range(95, 100):
+    for i in range(0, 1):
+        for j in range(0, 100):
             grid[i,j] = 1 if random.random() < 0.15 else 0
-    for i in range(95, 100):
-        for j in range(95, 100):
+    for i in range(99, 100):
+        for j in range(0, 100):
             grid[i,j] = 1 if random.random() < 0.15 else 0
 
 def update():
@@ -94,8 +95,27 @@ def generate_direction_with_attraction(i, j, attraction=True):
     return direction
 
 def sample_DLA():
+    global finalgrid
     pycxsimulator.GUI().start(func=[initialize, observe, update])
+    return finalgrid
+
+def boxCount(grid):
+    # global finalgrid
+    box_count_full=0
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j]==2:
+                box_count_full+=1
+    return box_count_full
+
 
 if __name__ == '__main__':
     print('MOCS Assignment 2, 10-26-2020')
-    sample_DLA()
+    final = sample_DLA()
+    print(final)
+    print(final[50])
+    number = boxCount(final)
+    print("Box count ", number)
+    print("Dimension: ")
+    dimension = math.log10(number)/math.log10(100)
+    print(dimension)
