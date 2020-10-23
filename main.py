@@ -8,11 +8,11 @@ def initialize():
     global grid, nextGrid
     global directionGrid
     # directionGrid = initialize_random_directions(100,100)
-    directionGrid = demo2()
+    directionGrid = interesting_flow()
     grid = zeros([100,100])
-    for i in range(40, 60):
-        for j in range(40, 60):
-            grid[i,j] = 1 if random.random() < .05 else 0
+    for i in range(0, 10):
+        for j in range(0, 10):
+            grid[i,j] = 1 if random.random() < .75 else 0
     nextGrid = zeros([100,100])
 
 def demo2():
@@ -30,6 +30,49 @@ def demo2():
                 directionGrid[i][j]=315 # NW
             if (i>50 and j>=50):
                 directionGrid[i][j]=270 # West
+    directionGrid = boundary_setup(directionGrid)
+    return directionGrid
+
+def interesting_flow():
+    directionGrid = zeros([100,100])
+    for i in range(100):
+        for j in range(100):
+            if (i>=0 and i < 25):
+                if (j>=0 and j<25):
+                    directionGrid[i][j] = random.choice([90, 135, 180])
+                elif (j>=25 and j<50):
+                    directionGrid[i][j] = random.choice([90])
+                elif (j>=50 and j<75):
+                    directionGrid[i][j] = random.choice([90, 180])
+                elif (j>=75 and j<100):
+                    directionGrid[i][j] = random.choice([0,45,90,135,180,225,270,315])
+            if (i>=25 and i<50):
+                if (j>=0 and j<25):
+                    directionGrid[i][j] = random.choice([90, 135, 180])
+                elif (j>=25 and j<50):
+                    directionGrid[i][j] = random.choice([180, 135])
+                elif (j>=50 and j<75):
+                    directionGrid[i][j] = random.choice([180, 135])
+                elif (j>=75 and j<100):
+                    directionGrid[i][j] = random.choice([180, 135])
+            if (i>=50 and i<75):
+                if (j>=0 and j<25):
+                    directionGrid[i][j] = random.choice([180, 225])
+                elif (j>=25 and j<50):
+                    directionGrid[i][j] = random.choice([270, 225])
+                elif (j>=50 and j<75):
+                    directionGrid[i][j] = random.choice([135, 90])
+                elif (j>=75 and j<100):
+                    directionGrid[i][j] = random.choice([180, 135, 90])
+            if (i>=75 and i<100):
+                if (j>=0 and j<25):
+                    directionGrid[i][j] = random.choice([180, 270, 225])
+                elif (j>=25 and j<50):
+                    directionGrid[i][j] = random.choice([180, 270, 225])
+                elif (j>=50 and j<75):
+                    directionGrid[i][j] = random.choice([180, 135])
+                elif (j>=75 and j<100):
+                    directionGrid[i][j] = random.choice([180, 225, 135])
     directionGrid = boundary_setup(directionGrid)
     return directionGrid
 
