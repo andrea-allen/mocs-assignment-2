@@ -18,7 +18,6 @@ def initialize():
 def demo2():
     #Key: North=0, NE=45, E=90, SE=135, S=180, SW=225,
     #W=270, NW=315
-    #TODO How do we want to initialize the flows? This is a sample initialization for now
     directionGrid = zeros([100,100])
     for i in range(100):
         for j in range(100):

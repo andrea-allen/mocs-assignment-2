@@ -100,39 +100,48 @@ def sample_DLA():
     pycxsimulator.GUI().start(func=[initialize, observe, update])
     return finalgrid
 
-def boxCount(grid, gridLength, side_length):
-    box_count_full=0
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j]==2:
-                box_count_full+=1
-    box_count_sidelength=0
+def boxCount(grid, side_length):
+    box_count_of_sidelength=0
     for i in range(0, len(grid)-side_length+1, side_length):
         for j in range(0, len(grid) - side_length+1, side_length):
-            contains_cells = False
+            contains_cells = 0
             for k in range(i, i+side_length):
                 for l in range(j, j+side_length):
-                    contains_cells=(grid[k][l]==2)
-            if contains_cells:
-                box_count_sidelength+=1
-    return box_count_sidelength
+                    if (grid[k][l]==2):
+                        contains_cells+=1
+            if contains_cells>0:
+                box_count_of_sidelength+=1
+    return box_count_of_sidelength
 
 
 if __name__ == '__main__':
     print('MOCS Assignment 2, 10-26-2020')
+    sidelengths = [128,64, 32, 16, 8, 4, 2, 1]
     final = sample_DLA()
-    print(final)
-    print(final[50])
-    # number = boxCount(final, 100, 50)
     gridLength=256
-    # print("Box count ", number)
     print("Dimension: ")
     dimension_count_array= []
-    for sidelength in [1,2,4,8,16,32,64,128]:
-        boxes = boxCount(final, gridLength, sidelength)
+    box_counts = []
+    for sidelength in sidelengths:
+        boxes = boxCount(final, sidelength)
+        box_counts.append(boxes)
         print("Side length ", sidelength, " boxes: ", boxes)
         dimension = math.log10(boxes)/math.log10(gridLength/sidelength)
         dimension_count_array.append(dimension)
     print(dimension_count_array)
-    plt.plot(np.array(dimension_count_array))
-    plt.show()
+    plt.plot(np.array(sidelengths) / 256, box_counts, color='orange', lw=4, alpha=0.75, label='Number boxes needed to cover')
+    plt.xlabel('Side length as fraction of total cells')
+    plt.ylabel('Number boxes')
+    lin_fit = (1 / (np.array(sidelengths) / 256)) ** (1.73)
+    plt.plot(np.array(sidelengths) / 256, lin_fit, color='blue', lw=4, label='(1/S)^1.73')
+    plt.loglog()
+    plt.legend(loc='upper right')
+
+#Side length  1  boxes:  15057
+#Side length  2  boxes:  9416
+#Side length  4  boxes:  3400
+#Side length  8  boxes:  942
+#Side length  16  boxes:  250
+#Side length  32  boxes:  64
+#Side length  64  boxes:  16
+#Side length  128  boxes:  4
